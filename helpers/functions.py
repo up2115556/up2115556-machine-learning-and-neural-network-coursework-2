@@ -17,6 +17,8 @@ def prepare_kepler_data(df: pd.DataFrame):
     numeric_cols = df.select_dtypes(include=["float", "int"]).columns
     # imputes missing numeric values using median
     df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].median(numeric_only=True))
+    # keep only numeric columns for the model
+    df = df.select_dtypes(include=["float", "int"])
     # split features/labels
     X = df.drop(columns=["label"])
     y = df["label"]
