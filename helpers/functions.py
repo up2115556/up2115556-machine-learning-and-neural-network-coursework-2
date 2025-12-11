@@ -11,7 +11,8 @@ def prepare_kepler_data(df: pd.DataFrame):
     for col in drop_cols:
         if col in df.columns:
             df = df.drop(columns=col)
-    df = df.dropna()  # deletes rows with missing feature data that we need
+    numeric_cols = df.select_dtypes(include=["float", "int"]).columns
+    df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].median())
     X = df.drop(columns=["label"])   # Split features/labels
     y = df["label"]
     return X, y
